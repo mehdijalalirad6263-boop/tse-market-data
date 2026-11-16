@@ -1,0 +1,24 @@
+name: TSETMC Connection Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get فولاد data
+        run: |
+          python - <<'PY'
+          import urllib.request
+          from urllib.parse import quote
+
+          symbol = quote("فولاد")
+          url = f"https://cdn.tsetmc.com/api/Instrument/GetInstrumentSearch/{symbol}"
+
+          req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+          response = urllib.request.urlopen(req, timeout=30)
+
+          print("HTTP:", response.status)
+          print(response.read().decode("utf-8")[:3000])
+          PY
